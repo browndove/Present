@@ -13,7 +13,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { DailyCheckin } from "@/components/daily-checkin"
+import { EnhancedDailyCheckin } from "@/components/daily-checkin"
 
 
 export default function Page() {
@@ -44,7 +44,7 @@ export default function Page() {
           </div>
         </header>
 
-        <DailyCheckin />
+        <EnhancedDailyCheckin />
       </SidebarInset>
     </SidebarProvider>
   );
