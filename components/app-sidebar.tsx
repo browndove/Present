@@ -24,6 +24,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { ur } from "zod/v4/locales"
 
 // Mental Health App Data
 const data = {
@@ -67,19 +68,19 @@ const data = {
       items: [
         {
           title: "Daily Check-in",
-          url: "/tracking/checkin",
+          url: "/student/daily-checkin",
         },
         {
           title: "Mood History",
-          url: "/student/history",
+          url: "/student/mood-history",
         },
         {
           title: "New Journal Entry",
-          url: "/student/new",
+          url: "/student/new-entry",
         },
         {
           title: "My Entries",
-          url: "/student/entries",
+          url: "/student/my-entry",
         },
         {
           title: "Analytics",
@@ -91,6 +92,13 @@ const data = {
       title: "Student Companion",
       url: "/student/Mental-chat",
       icon: Target,
+      items: [
+        {
+          url: "/student/Mental-chat",
+          title: "Mental Chat",
+          description: "Your AI-powered mental health companion",
+        },
+      ],
     },
     {
       title: "Sessions & Support",
@@ -99,7 +107,7 @@ const data = {
       items: [
         {
           title: "Schedule Session",
-          url: "/appointments/book",
+          url: "/student/appointment",
         },
         {
           title: "Upcoming Sessions",
@@ -107,11 +115,11 @@ const data = {
         },
         {
           title: "Therapist Chat",
-          url: "/messages/therapist",
+          url: "/student/messaging",
         },
         {
           title: "Support Groups",
-          url: "/messages/groups",
+          url: "/student/support-groups",
         },
         {
           title: "Crisis Support",
@@ -124,25 +132,14 @@ const data = {
       url: "/resources",
       icon: BookOpen,
       items: [
-        {
-          title: "Educational Content",
-          url: "/resources/education",
-        },
-        {
-          title: "Worksheets",
-          url: "/resources/worksheets",
-        },
-        {
-          title: "Support Forums",
-          url: "/community/forums",
-        },
+       
         {
           title: "Peer Connections",
-          url: "/community/peers",
+          url: "/student/peers",
         },
         {
           title: "Success Stories",
-          url: "/community/stories",
+          url: "/student/succes",
         },
       ],
     },

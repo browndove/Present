@@ -46,9 +46,7 @@ import {
   DollarSign,
   Phone,
   Thermometer,
-  StickerIcon as Stomach,
   Bone,
-  TreesIcon as Lungs,
   HeartHandshake,
   Shield,
   AlertTriangle,
@@ -69,6 +67,16 @@ import {
   Stethoscope,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+
+// Mock Firebase functions for demo purposes
+const mockAddDoc = async (collection: any, data: any) => {
+  console.log("Mock saving data:", data)
+  return Promise.resolve({ id: "mock-id" })
+}
+
+const mockCollection = (db: any, collectionName: string) => ({
+  name: collectionName,
+})
 
 const moodEmojis = [
   { emoji: "😢", label: "Very Sad", value: 1, color: "bg-red-100 border-red-300" },
@@ -107,13 +115,13 @@ const secondaryMoodTags = [
 
 const physicalSymptoms = [
   { key: "headache", label: "Headache", icon: Brain, severity: [0] },
-  { key: "stomachache", label: "Stomach Issues", icon: Stomach, severity: [0] },
+  { key: "stomachache", label: "Stomach Issues", icon: Heart, severity: [0] },
   { key: "fatigue", label: "Fatigue", icon: Battery, severity: [0] },
   { key: "muscle_tension", label: "Muscle Tension", icon: Bone, severity: [0] },
-  { key: "breathing", label: "Breathing Issues", icon: Lungs, severity: [0] },
+  { key: "breathing", label: "Breathing Issues", icon: Activity, severity: [0] },
   { key: "heart_rate", label: "Heart Racing", icon: Heart, severity: [0] },
   { key: "dizziness", label: "Dizziness", icon: RotateCcw, severity: [0] },
-  { key: "nausea", label: "Nausea", icon: Stomach, severity: [0] },
+  { key: "nausea", label: "Nausea", icon: Heart, severity: [0] },
 ]
 
 const weatherOptions = [
@@ -204,7 +212,7 @@ const socialInteractions = [
 ]
 
 const copingStrategies = [
-  { key: "deep_breathing", label: "Deep Breathing", icon: Lungs, used: false, effectiveness: [0] },
+  { key: "deep_breathing", label: "Deep Breathing", icon: Activity, used: false, effectiveness: [0] },
   {
     key: "progressive_relaxation",
     label: "Progressive Muscle Relaxation",
@@ -265,7 +273,7 @@ export function EnhancedDailyCheckin() {
         ...acc,
         [symptom.key]: { severity: [0], notes: "" },
       }),
-      {},
+      {} as Record<string, { severity: number[]; notes: string }>,
     ),
   )
   const [medications, setMedications] = useState(medicationList)
@@ -323,7 +331,7 @@ export function EnhancedDailyCheckin() {
 
   const getCompletionPercentage = () => {
     let completed = 0
-    const total = 15 // Increased total trackable items
+    const total = 15 // Total trackable items
 
     if (selectedMood !== null) completed++
     if (energyLevel[0] !== 5) completed++
@@ -335,7 +343,7 @@ export function EnhancedDailyCheckin() {
     if (weather) completed++
     if (anxietyLevel[0] !== 3) completed++
     if (stressLevel[0] !== 3) completed++
-    if (Object.values(symptoms).some((s: any) => s.severity[0] > 0)) completed++
+    if (Object.values(symptoms).some((s) => s.severity[0] > 0)) completed++
     if (medications.some((med) => med.taken)) completed++
     if (socialData.some((social) => social.duration > 0)) completed++
     if (copingData.some((coping) => coping.used)) completed++
@@ -404,20 +412,59 @@ export function EnhancedDailyCheckin() {
   }
 
   const handleSubmit = async () => {
+    if (!selectedMood) {
+      return
+    }
+
     setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setSubmitted(true)
-    setIsSubmitting(false)
-    setTimeout(() => {
-      setSubmitted(false)
-    }, 3000)
+
+    const dailyCheckinData = {
+      timestamp: new Date(),
+      selectedMood,
+      moodIntensity: moodIntensity[0],
+      secondaryMoods,
+      energyLevel: energyLevel[0],
+      anxietyLevel: anxietyLevel[0],
+      stressLevel: stressLevel[0],
+      sleepQuality,
+      sleepHours,
+      notes,
+      gratitudeItems,
+      dailyGoals,
+      goalCompletion,
+      habits,
+      symptoms,
+      medications,
+      socialData,
+      copingData,
+      triggerData,
+      weather,
+      currentLocation,
+      therapySession,
+      academicStress,
+      financialStress,
+      relationshipQuality,
+      sharePublic,
+      notifyPartner,
+    }
+
+    try {
+      await mockAddDoc(mockCollection(null, "dailyCheckins"), dailyCheckinData)
+      setSubmitted(true)
+      setIsSubmitting(false)
+      setTimeout(() => {
+        setSubmitted(false)
+      }, 3000)
+    } catch (error) {
+      console.error("Error adding document: ", error)
+      setIsSubmitting(false)
+    }
   }
 
   const completionPercentage = getCompletionPercentage()
 
   const generateInsights = () => {
     const insights = []
-
     if (selectedMood && selectedMood <= 2 && stressLevel[0] >= 7) {
       insights.push({
         type: "warning",
@@ -426,7 +473,6 @@ export function EnhancedDailyCheckin() {
         icon: AlertTriangle,
       })
     }
-
     if (sleepQuality <= 2 && energyLevel[0] <= 3) {
       insights.push({
         type: "info",
@@ -435,7 +481,6 @@ export function EnhancedDailyCheckin() {
         icon: Moon,
       })
     }
-
     if (Object.values(habits).filter(Boolean).length >= 7) {
       insights.push({
         type: "success",
@@ -444,7 +489,6 @@ export function EnhancedDailyCheckin() {
         icon: Trophy,
       })
     }
-
     return insights
   }
 
@@ -1694,7 +1738,7 @@ export function EnhancedDailyCheckin() {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg md:text-xl flex items-center gap-2">
-            <Lungs className="h-4 w-4 md:h-5 md:w-5 text-blue-500" />
+            <Activity className="h-4 w-4 md:h-5 md:w-5 text-blue-500" />
             Quick Wellness Tools
           </CardTitle>
           <CardDescription className="text-sm">Immediate support tools</CardDescription>
@@ -1702,7 +1746,7 @@ export function EnhancedDailyCheckin() {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             <Button variant="outline" size="sm" className="h-auto p-3 flex-col gap-1 bg-transparent">
-              <Lungs className="h-4 w-4" />
+              <Activity className="h-4 w-4" />
               <span className="text-xs">Breathing</span>
             </Button>
             <Button variant="outline" size="sm" className="h-auto p-3 flex-col gap-1 bg-transparent">

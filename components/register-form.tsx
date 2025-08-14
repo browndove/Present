@@ -27,7 +27,7 @@ export function RegisterForm({
     confirmPassword: '',
     firstName: '',
     lastName: '',
-    // Counselor specific fields
+    
     licenseNumber: '',
     yearsExperience: '',
     specializations: '',

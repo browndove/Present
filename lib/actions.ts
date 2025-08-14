@@ -858,4 +858,3 @@ export async function createSessionNotes(
       });
     });
 
-    revalidatePath(`/appointment/${
