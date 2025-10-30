@@ -77,17 +77,17 @@ export default function Page() {
       .slice(0, 2)
   }
 
-  // Determine profile link based on user role
+  
   const getProfileLink = () => {
     if (user.role === 'student') {
       return '/student/profile'
     } else if (user.role === 'counselor') {
       return '/counselor/profile'
     }
-    return '/profile' // fallback
+    return '/profile' 
   }
 
-  // Handle logout with toast notification
+  
   const handleLogout = async () => {
     try {
       await logout()
@@ -352,7 +352,7 @@ export default function Page() {
             <Phone className="h-4 w-4 text-red-600 flex-shrink-0" />
             <AlertDescription className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
               <span className="text-red-900 font-medium text-sm leading-relaxed">
-                Crisis support available 24/7 • Call 988 or text HOME to 741741
+                Crisis support available 24/7 • Call 988 or text HOME to 112
               </span>
               <Button size="sm" variant="destructive" className="bg-red-600 hover:bg-red-700 w-full sm:w-auto">
                 Get Help Now

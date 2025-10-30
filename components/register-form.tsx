@@ -202,10 +202,10 @@ export function RegisterForm({
                     </div>
 
                     <div className="grid gap-2">
-                      <Label htmlFor="studentId">Student ID</Label>
+                      <Label htmlFor="studentId">Identification Number</Label>
                       <Input
-                        id="studentId"
-                        placeholder="Enter your student ID"
+                        id="Identificat number"
+                        placeholder="Enter your ID"
                         value={formData.studentId}
                         onChange={(e) => handleInputChange('studentId', e.target.value)}
                         required
@@ -269,7 +269,7 @@ export function RegisterForm({
                               <Input
                                 id="phone"
                                 type="tel"
-                                placeholder="(555) 123-4567"
+                                placeholder="(+233) 123-4567-890"
                                 value={formData.phone}
                                 onChange={(e) => handleInputChange('phone', e.target.value)}
                                 required
